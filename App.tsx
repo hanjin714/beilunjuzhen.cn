@@ -1,10 +1,9 @@
 
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
-import { ChevronDown, TrendingUp, Zap, ArrowRight, CheckCircle2, Quote, Database, Bot, MousePointerClick, BarChart3, ShieldAlert, Megaphone, Handshake, Loader2, Check, Anchor, Search, PlayCircle } from 'lucide-react';
+import { ChevronDown, TrendingUp, Zap, ArrowRight, Anchor, Search, PlayCircle, Mail, ClipboardList } from 'lucide-react';
 import ServiceCard from './components/ServiceCard';
 import CaseStudyModal from './components/CaseStudyModal';
-import ChatWidget from './components/ChatWidget';
 import MethodologyModal from './components/MethodologyModal';
 import BackgroundEffect from './components/BackgroundEffect';
 import DigitalStaffSection from './components/DigitalStaffSection';
@@ -19,11 +18,15 @@ const App: React.FC = () => {
   const [activeCaseStudy, setActiveCaseStudy] = useState<string | null>(null);
   const [showMethodology, setShowMethodology] = useState(false);
 
-  // Form State
-  const [email, setEmail] = useState('');
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
   const { scrollY } = useScroll();
+  const consultationMailto = `mailto:?subject=${encodeURIComponent('悖论矩阵 AI 增收诊断咨询')}&body=${encodeURIComponent(`你好，我想咨询悖论矩阵 AI 增收诊断。
+
+我的行业：
+当前主要增长卡点：
+客单价/复购方式：
+希望优先诊断的问题：
+
+`)}`;
 
   useLayoutEffect(() => {
     if ('scrollRestoration' in history) {
@@ -81,38 +84,6 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-
-    // 重置状态以便重试
-    if (submitStatus === 'error') setSubmitStatus('loading');
-    else setSubmitStatus('loading');
-
-    try {
-      const response = await fetch('/api/proxy/coze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          // CONFIRMED: 邮件触发工作流 ID
-          workflow_id: '7583054099911999514',
-          parameters: { input: `用户申请增收诊断，联系邮箱: ${email.trim()}` }
-        })
-      });
-      const data = await response.json();
-      if (data.code === 0) {
-        setSubmitStatus('success');
-        setEmail('');
-      } else {
-        console.error('Coze API Error:', data);
-        setSubmitStatus('error');
-      }
-    } catch (error) {
-      console.error('Network Request Error:', error);
-      setSubmitStatus('error');
-    }
-  };
-
   return (
     <div className="min-h-screen text-white selection:bg-cyan-500 selection:text-black bg-black">
       <BackgroundEffect />
@@ -125,7 +96,6 @@ const App: React.FC = () => {
         )}
       </AnimatePresence>
       <AnimatePresence>{showMethodology && <MethodologyModal onClose={() => setShowMethodology(false)} />}</AnimatePresence>
-      <ChatWidget />
 
       {/* 
         Fixed Animated Logo 
@@ -285,38 +255,40 @@ const App: React.FC = () => {
         {/* Call to Action */}
         <section id="contact" className="py-24 bg-zinc-950/80 border-t border-white/10 relative overflow-hidden backdrop-blur-xl">
           <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-8 leading-tight">申请您的 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">AI 增收点诊断</span></h2>
-              <p className="text-lg md:text-xl text-gray-300">留下联系方式，我们将在 24 小时内寻找您的企业现金流增长点。</p>
+              <p className="text-lg md:text-xl text-gray-300">带着行业、客单价、复购方式和当前卡点来聊，我们一起判断现金流增长点。</p>
             </motion.div>
-            <AnimatePresence mode="wait">
-              {submitStatus === 'success' ? (
-                <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md mx-auto bg-cyan-900/30 border border-cyan-500/30 rounded-2xl p-12 backdrop-blur-md">
-                  <div className="flex flex-col items-center"><div className="w-20 h-20 bg-cyan-500/20 rounded-full flex items-center justify-center mb-6"><Check className="w-10 h-10 text-cyan-400" /></div><h3 className="text-2xl font-bold text-white mb-2">已接收申请</h3><p className="text-cyan-200/80 text-sm">增收计划即将启动</p></div>
-                </motion.div>
-              ) : (
-                <motion.form key="form" className="max-w-md mx-auto space-y-4 text-left" onSubmit={handleSubmit}>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={submitStatus === 'loading'} placeholder="请输入您的联系邮箱 (Email)" className="w-full bg-black/50 border border-gray-700 rounded-lg p-5 text-white focus:outline-none focus:border-cyan-500 transition-all text-center" />
-                  <button 
-                    type="submit" 
-                    disabled={submitStatus === 'loading' || !email.trim()} 
-                    className={`w-full font-black py-5 rounded-lg transition-all flex items-center justify-center gap-3 tracking-widest text-lg ${
-                      submitStatus === 'error' 
-                        ? 'bg-red-900/50 border border-red-500/50 text-red-200 hover:bg-red-900/70' 
-                        : 'bg-gradient-to-r from-cyan-700 to-blue-800 hover:from-cyan-600 hover:to-blue-700 text-white'
-                    }`}
-                  >
-                    {submitStatus === 'loading' ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : submitStatus === 'error' ? (
-                      <><ShieldAlert className="w-5 h-5" /> 提交失败，点击重试</>
-                    ) : (
-                      <><Handshake className="w-5 h-5" /> 开启增收诊断 <ArrowRight className="w-5 h-5" /></>
-                    )}
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="max-w-2xl mx-auto"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left">
+                {['行业与业务模式', '当前增长瓶颈', '现有客户数据'].map((item, index) => (
+                  <div key={item} className="border border-white/10 bg-black/30 rounded-lg p-4">
+                    <div className="text-cyan-400 text-xs font-bold tracking-widest mb-2">0{index + 1}</div>
+                    <div className="text-sm text-gray-200">{item}</div>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href={consultationMailto}
+                className="group mx-auto w-full md:w-auto inline-flex items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-cyan-700 to-blue-800 px-8 py-5 text-lg font-black tracking-widest text-white transition-all hover:from-cyan-600 hover:to-blue-700"
+              >
+                <Mail className="w-5 h-5" />
+                发送诊断咨询
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </a>
+
+              <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
+                <ClipboardList className="w-4 h-4 text-cyan-500/70" />
+                <span>建议附上 3 个真实业务问题，诊断会更准。</span>
+              </div>
+            </motion.div>
             
             <div className="mt-24 pt-12 border-t border-white/5 flex flex-col items-center gap-4">
               <div className="text-[10px] text-gray-500 flex flex-col md:flex-row items-center gap-2 md:gap-6 uppercase tracking-[0.2em]">
