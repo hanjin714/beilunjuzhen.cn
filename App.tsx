@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
-import { ChevronDown, TrendingUp, Zap, ArrowRight, Anchor, Search, PlayCircle, Mail, ClipboardList } from 'lucide-react';
+import { ChevronDown, TrendingUp, Zap, ArrowRight, Anchor, Search, PlayCircle, ClipboardList } from 'lucide-react';
 import ServiceCard from './components/ServiceCard';
 import CaseStudyModal from './components/CaseStudyModal';
 import MethodologyModal from './components/MethodologyModal';
@@ -19,14 +19,7 @@ const App: React.FC = () => {
   const [showMethodology, setShowMethodology] = useState(false);
 
   const { scrollY } = useScroll();
-  const consultationMailto = `mailto:?subject=${encodeURIComponent('悖论矩阵 AI 增收诊断咨询')}&body=${encodeURIComponent(`你好，我想咨询悖论矩阵 AI 增收诊断。
-
-我的行业：
-当前主要增长卡点：
-客单价/复购方式：
-希望优先诊断的问题：
-
-`)}`;
+  const leadFormUrl = '#';
 
   useLayoutEffect(() => {
     if ('scrollRestoration' in history) {
@@ -257,7 +250,7 @@ const App: React.FC = () => {
           <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-8 leading-tight">申请您的 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">AI 增收点诊断</span></h2>
-              <p className="text-lg md:text-xl text-gray-300">带着行业、客单价、复购方式和当前卡点来聊，我们一起判断现金流增长点。</p>
+              <p className="text-lg md:text-xl text-gray-300">填写一份简短问卷，我们据此判断企业现金流增长点。</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -266,28 +259,17 @@ const App: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="max-w-2xl mx-auto"
             >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left">
-                {['行业与业务模式', '当前增长瓶颈', '现有客户数据'].map((item, index) => (
-                  <div key={item} className="border border-white/10 bg-black/30 rounded-lg p-4">
-                    <div className="text-cyan-400 text-xs font-bold tracking-widest mb-2">0{index + 1}</div>
-                    <div className="text-sm text-gray-200">{item}</div>
-                  </div>
-                ))}
-              </div>
-
               <a
-                href={consultationMailto}
+                href={leadFormUrl}
+                onClick={(event) => {
+                  if (leadFormUrl === '#') event.preventDefault();
+                }}
                 className="group mx-auto w-full md:w-auto inline-flex items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-cyan-700 to-blue-800 px-8 py-5 text-lg font-black tracking-widest text-white transition-all hover:from-cyan-600 hover:to-blue-700"
               >
-                <Mail className="w-5 h-5" />
-                发送诊断咨询
+                <ClipboardList className="w-5 h-5" />
+                填写增收诊断问卷
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </a>
-
-              <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
-                <ClipboardList className="w-4 h-4 text-cyan-500/70" />
-                <span>建议附上 3 个真实业务问题，诊断会更准。</span>
-              </div>
             </motion.div>
             
             <div className="mt-24 pt-12 border-t border-white/5 flex flex-col items-center gap-4">
