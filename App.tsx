@@ -293,14 +293,6 @@ const App: React.FC = () => {
             <div className="mt-24 pt-12 border-t border-white/5 flex flex-col items-center gap-4">
               <div className="text-[10px] text-gray-500 flex flex-col md:flex-row items-center gap-2 md:gap-6 uppercase tracking-[0.2em]">
                 <span>&copy; 2025 悖论矩阵 (Paradox Matrix). All rights reserved.</span>
-                <a 
-                  href="https://beian.miit.gov.cn/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-cyan-500 transition-colors"
-                >
-                  蜀ICP备2025124059号-2
-                </a>
               </div>
             </div>
           </div>
