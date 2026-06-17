@@ -130,7 +130,19 @@ const App: React.FC = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="h-screen flex flex-col items-center justify-center relative px-6 text-center">
+        <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden px-6 text-center">
+          <video
+            className="absolute inset-0 h-full w-full object-cover opacity-45 saturate-[0.85]"
+            src="/hero-brand-cinematic.mp4"
+            poster="/hero-brand-cinematic-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.14),transparent_35%),linear-gradient(to_bottom,rgba(0,0,0,0.25),rgba(0,0,0,0.72)_58%,#000_100%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
           {/* 
             内容容器：
             1. 增加了 pt-[45vh] 将文字推到 Logo 下方很远的位置，避免视觉拥挤。
@@ -201,34 +213,49 @@ const App: React.FC = () => {
         </section>
 
         {/* 3 Core Models */}
-        <section id="models" className="py-24 relative bg-black/50 border-y border-white/5">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <span className="text-cyan-500 text-sm font-bold tracking-widest uppercase">Our Service</span>
-              <h2 className="text-3xl md:text-5xl font-black mt-2 mb-4">我们如何帮企业增收</h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-cyan-600 to-purple-600 mx-auto"></div>
+        <section id="models" className="relative overflow-hidden border-y border-white/5 bg-black py-28">
+          <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(6,182,212,0.08),transparent_34%,rgba(168,85,247,0.08)_72%,transparent)]" />
+          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+          <div className="container relative mx-auto px-6">
+            <div className="mb-16 grid items-end gap-8 md:grid-cols-[1fr_0.72fr]">
+              <div>
+                <span className="text-sm font-black uppercase tracking-[0.32em] text-cyan-500">Revenue Architecture</span>
+                <h2 className="mt-4 text-4xl font-black leading-tight text-white md:text-6xl">我们如何帮企业增收</h2>
+              </div>
+              <p className="text-sm leading-7 text-gray-400 md:text-base">
+                从现有数据里拆出需求预测、线索修复和销售放大三条路径，让增长动作变得可衡量、可复盘、可复制。
+              </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <ServiceCard 
                 delay={0.1} 
+                index="Model 01"
+                metric="Predict"
+                accent="from-cyan-400 to-blue-500"
                 title="预测客户需求与复购" 
                 desc="利用企业现有数据预测客户下次购买时机与高价值客户，提升回款与销售转化。" 
                 result="提高复购率、减少库存积压"
-                icon={<TrendingUp className="w-12 h-12 text-blue-400" />} 
+                icon={<TrendingUp className="w-7 h-7 text-cyan-300" />} 
               />
               <ServiceCard 
                 delay={0.2} 
+                index="Model 02"
+                metric="Recover"
+                accent="from-violet-400 to-fuchsia-500"
                 title="捡回本来属于你的钱" 
                 desc="自动监测销售断层与已流失线索并提醒跟进，让每个潜在订单都有机会成单。" 
                 result="减少流失客户损失、提升成交机会"
-                icon={<Anchor className="w-12 h-12 text-purple-400" />} 
+                icon={<Anchor className="w-7 h-7 text-violet-300" />} 
               />
               <ServiceCard 
                 delay={0.3} 
+                index="Model 03"
+                metric="Scale"
+                accent="from-amber-300 to-orange-500"
                 title="放大销售能力" 
                 desc="用 AI 话术与私域自动化让优秀销售表现成倍复制，提高整体销售转化效率。" 
                 result="同样团队下提升成交量"
-                icon={<Zap className="w-12 h-12 text-orange-400" />} 
+                icon={<Zap className="w-7 h-7 text-amber-300" />} 
               />
             </div>
           </div>
