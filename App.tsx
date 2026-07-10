@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const [showMethodology, setShowMethodology] = useState(false);
 
   const { scrollY } = useScroll();
-  const leadFormUrl = '#';
+  const leadFormUrl = 'https://beilunjuzhen.feishu.cn/share/base/form/shrcnYq5cifmUe7QeiYGsPBIPwh';
 
   useLayoutEffect(() => {
     if ('scrollRestoration' in history) {
